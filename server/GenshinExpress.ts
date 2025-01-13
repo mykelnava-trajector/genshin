@@ -7,6 +7,7 @@ app.listen(3000, () => {
   console.log(`Listening to port 3000.`);
 });
 
+let character: string[] = [];
 app.get(`/character`, async (req, res) => {
   try {
     const GenshinCharacters = await fetch(
@@ -40,7 +41,8 @@ app.get(`/weapons`, async (req, res) => {
       `https://genshin.jmp.blue/weapons/${randomWeapon}/icon`
     );
     //use /weapons/name/icon to display the name
-    res.status(200).json(randomWeaponData);
+    const randomWeaponImageResponse = randomWeaponImage.json();
+    res.status(200).json({ weapon: randomWeaponData });
   } catch (error) {
     res.status(400).json({ message: "Error fetching weapons." });
   }
