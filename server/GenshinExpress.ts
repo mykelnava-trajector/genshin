@@ -22,7 +22,13 @@ app.get(`/character`, async (req, res) => {
       `https://genshin.jmp.blue/characters/${randomCharacter}`
     );
     const randomCharacterJSON = await randomCharacterData.json();
-    res.status(200).json(randomCharacterJSON);
+    character.push(randomCharacterJSON);
+    const randomCharacterImage = await fetch(
+      `https://genshin.jmp.blue/characters/${randomCharacter}/card`
+    );
+    res
+      .status(200)
+      .json({ character: randomCharacterJSON[0], image: randomCharacterImage });
   } catch (error) {
     res.status(400).json({ message: "Failed to fetch random character." });
   }
@@ -41,8 +47,9 @@ app.get(`/weapons`, async (req, res) => {
       `https://genshin.jmp.blue/weapons/${randomWeapon}/icon`
     );
     //use /weapons/name/icon to display the name
-    const randomWeaponImageResponse = randomWeaponImage.json();
-    res.status(200).json({ weapon: randomWeaponData });
+    res
+      .status(200)
+      .json({ weapon: randomWeaponData, image: randomWeaponImage });
   } catch (error) {
     res.status(400).json({ message: "Error fetching weapons." });
   }

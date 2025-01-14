@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const App = () => {
   const [genshinPull, setGenshinPull];
   const randomGenshin = () => {
-    const RGP = await fetch(`http://localhost:3000/character`);
+    const RGP = await fetch(`http://localhost:3000/wish`);
     if (!Response.ok)
       throw new Error("There's an error in fetching the characters.");
     const data = await RGP.json();
