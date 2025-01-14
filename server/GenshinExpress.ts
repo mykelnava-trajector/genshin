@@ -44,7 +44,6 @@ app.get(`/weapons`, async (req, res) => {
     const randomWeaponImage = await fetch(
       `https://genshin.jmp.blue/weapons/${randomWeapon}/icon`
     );
-    //use /weapons/name/icon to display the name
     res
       .status(200)
       .json({ weapon: randomWeaponData, image: randomWeaponImage });
