@@ -19,14 +19,14 @@ const Page = () => {
     try {
       const response = await fetch("http://localhost:3000/weapons");
       const data = await response.json();
-      setWeapon(data.randomWeaponData);
+      setWeapon(data.weapon);
     } catch (error) {
       console.error("Error fetching weapon:", error);
     }
   };
 
   return (
-    <div className="bg-genshin">
+    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
       <h1 className="text-2xl font-bold mb-4">Gacha Simulator</h1>
       <div>
         <button onClick={fetchRandomCharacter} className="btn-standard">
