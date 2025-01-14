@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
-const GachaSimulator = () => {
+const Page = () => {
   const [character, setCharacter] = useState<any>(null);
   const [weapon, setWeapon] = useState<any>(null);
 
@@ -19,14 +19,14 @@ const GachaSimulator = () => {
     try {
       const response = await fetch("http://localhost:3000/weapons");
       const data = await response.json();
-      setWeapon(data.weapon);
+      setWeapon(data.randomWeaponData);
     } catch (error) {
       console.error("Error fetching weapon:", error);
     }
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-genshin">
       <h1 className="text-2xl font-bold mb-4">Gacha Simulator</h1>
       <div>
         <button onClick={fetchRandomCharacter} className="btn-standard">
@@ -61,4 +61,4 @@ const GachaSimulator = () => {
   );
 };
 
-export default GachaSimulator;
+export default Page;
