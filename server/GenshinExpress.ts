@@ -1,56 +1,23 @@
-import * as express from "express";
-import * as cors from "cors";
+import axios from "axios";
 
-const app = express();
-app.use(cors());
-app.listen(3000, () => {
-  console.log(`Listening to port 3000.`);
-});
+const API_BASE_URL = "https://api.genshin.dev";
 
-let character: string[] = [];
-app.get(`/character`, async (req, res) => {
+export const fetchCharacters = async () => {
   try {
-    const GenshinCharacters = await fetch(
-      `https://genshin.jmp.blue/characters`
-    );
-    const GenshinCharData = await GenshinCharacters.json();
+    const response = await axios.get(`${API_BASE_URL}/characters`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching characters:", error);
+    return [];
+  }
+};
 
-    // Randomly select a character from the fetched data
-    const randomIndex = Math.floor(Math.random() * GenshinCharData.length);
-    const randomCharacter = GenshinCharData[randomIndex];
-    const randomCharacterData = await fetch(
-      `https://genshin.jmp.blue/characters/${randomCharacter}`
-    );
-    const randomCharacterJSON = await randomCharacterData.json();
-    character.push(randomCharacterJSON);
-    const randomCharacterImage = await fetch(
-      `https://genshin.jmp.blue/characters/${randomCharacter}/card`
-    );
-    res
-      .status(200)
-      .json({ character: randomCharacterJSON[0], image: randomCharacterImage });
-  } catch (error) {
-    res.status(400).json({ message: "Failed to fetch random character." });
-  }
-});
-app.get(`/weapons`, async (req, res) => {
+export const fetchWeapons = async () => {
   try {
-    const GenshinWeapons = await fetch(`https://genshin.jmp.blue/weapons/`);
-    const GenshinWeaponData = await GenshinWeapons.json();
-    const randomIndex = Math.floor(Math.random() * GenshinWeaponData.length);
-    const randomWeapon = GenshinWeaponData[randomIndex];
-    const randomWeaponAPI = await fetch(
-      `https://genshin.jmp.blue/weapons/${randomWeapon}`
-    );
-    const randomWeaponData = await randomWeaponAPI.json();
-    const randomWeaponImage = await fetch(
-      `https://genshin.jmp.blue/weapons/${randomWeapon}/icon`
-    );
-    //use /weapons/name/icon to display the name
-    res
-      .status(200)
-      .json({ weapon: randomWeaponData, image: randomWeaponImage });
+    const response = await axios.get(`${API_BASE_URL}/weapons`);
+    return response.data;
   } catch (error) {
-    res.status(400).json({ message: "Error fetching weapons." });
+    console.error("Error fetching weapons:", error);
+    return [];
   }
-});
+};
