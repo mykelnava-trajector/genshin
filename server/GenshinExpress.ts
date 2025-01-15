@@ -6,6 +6,7 @@ app.use(cors());
 app.listen(3000, () => {
   console.log(`Listening to port 3000.`);
 });
+
 app.get(`/character`, async (req, res) => {
   try {
     const GenshinCharacters = await fetch(
@@ -20,12 +21,7 @@ app.get(`/character`, async (req, res) => {
       `https://genshin.jmp.blue/characters/${randomCharacter}`
     );
     const randomCharacterJSON = await randomCharacterData.json();
-    const randomCharacterImage = await fetch(
-      `https://genshin.jmp.blue/characters/${randomCharacter}/card`
-    );
-    res
-      .status(200)
-      .json({ character: randomCharacterJSON, image: randomCharacterImage });
+    res.status(200).json({ character: randomCharacterJSON });
   } catch (error) {
     res.status(400).json({ message: "Failed to fetch random character." });
   }
@@ -40,12 +36,8 @@ app.get(`/weapons`, async (req, res) => {
       `https://genshin.jmp.blue/weapons/${randomWeapon}`
     );
     const randomWeaponData = await randomWeaponAPI.json();
-    const randomWeaponImage = await fetch(
-      `https://genshin.jmp.blue/weapons/${randomWeapon}/icon`
-    );
-    res
-      .status(200)
-      .json({ weapon: randomWeaponData, image: randomWeaponImage });
+
+    res.status(200).json({ weapon: randomWeaponData });
   } catch (error) {
     res.status(400).json({ message: "Error fetching weapons." });
   }

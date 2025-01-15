@@ -1,9 +1,9 @@
 import { useState } from "react";
-import "./App.css";
+import { Character, Weapon } from "./interface/GenshinInterface";
 
-const Page = () => {
-  const [character, setCharacter] = useState<any>(null);
-  const [weapon, setWeapon] = useState<any>(null);
+const Genshin = () => {
+  const [character, setCharacter] = useState<Character | null>(null);
+  const [weapon, setWeapon] = useState<Weapon | null>(null);
 
   const fetchRandomCharacter = async () => {
     try {
@@ -26,39 +26,50 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-2xl font-bold mb-4">Gacha Simulator</h1>
-      <div>
-        <button onClick={fetchRandomCharacter} className="btn-standard">
+    <div className="bg-blue-950 min-h-screen flex flex-col items-center justify-center p-4">
+      <h1 className="text-white text-3xl font-bold mb-6">
+        Genshin Impact Pull
+      </h1>
+      <div className="flex space-x-4 mb-6">
+        <button
+          onClick={fetchRandomCharacter}
+          className="bg-orange-600 text-white px-6 py-3 rounded-md hover:bg-orange-500"
+        >
           Get Random Character
         </button>
-        <button onClick={fetchRandomWeapon} className="btn-weapon">
+        <button
+          onClick={fetchRandomWeapon}
+          className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-400"
+        >
           Get Random Weapon
         </button>
+      </div>
 
-        <div className="result mt-4">
-          {character && (
-            <div>
-              <img
-                src={`https://genshin.jmp.blue/characters/${character.id}/gacha-card`}
-                alt={character.name}
-              />
-              <p>{character.name}</p>
-            </div>
-          )}
-          {weapon && (
-            <div>
-              <img
-                src={`https://genshin.jmp.blue/weapons/${weapon.id}/icon`}
-                alt={weapon.name}
-              />
-              <p>{weapon.name}</p>
-            </div>
-          )}
-        </div>
+      <div className="flex flex-row items-center space-x-8">
+        {character && (
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <img
+              src={`https://genshin.jmp.blue/characters/${character.id}/gacha-card`}
+              alt={character.name}
+              className="w-48 h-auto rounded-lg mb-4"
+            />
+            <p className="text-lg font-semibold">{character.name}</p>
+          </div>
+        )}
+
+        {weapon && (
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <img
+              src={`https://genshin.jmp.blue/weapons/${weapon.id}/icon`}
+              alt={weapon.name}
+              className="w-48 h-auto rounded-lg mb-4"
+            />
+            <p className="text-lg font-semibold">{weapon.name}</p>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default Page;
+export default Genshin;

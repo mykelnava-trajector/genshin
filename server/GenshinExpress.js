@@ -44,11 +44,11 @@ app.listen(3000, function () {
     console.log("Listening to port 3000.");
 });
 app.get("/character", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var GenshinCharacters, GenshinCharData, randomIndex, randomCharacter, randomCharacterData, randomCharacterJSON, randomCharacterImage, error_1;
+    var GenshinCharacters, GenshinCharData, randomIndex, randomCharacter, randomCharacterData, randomCharacterJSON, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 6, , 7]);
+                _a.trys.push([0, 5, , 6]);
                 return [4 /*yield*/, fetch("https://genshin.jmp.blue/characters")];
             case 1:
                 GenshinCharacters = _a.sent();
@@ -63,27 +63,22 @@ app.get("/character", function (req, res) { return __awaiter(void 0, void 0, voi
                 return [4 /*yield*/, randomCharacterData.json()];
             case 4:
                 randomCharacterJSON = _a.sent();
-                return [4 /*yield*/, fetch("https://genshin.jmp.blue/characters/".concat(randomCharacter, "/card"))];
+                res.status(200).json({ character: randomCharacterJSON });
+                return [3 /*break*/, 6];
             case 5:
-                randomCharacterImage = _a.sent();
-                res
-                    .status(200)
-                    .json({ character: randomCharacterJSON, image: randomCharacterImage });
-                return [3 /*break*/, 7];
-            case 6:
                 error_1 = _a.sent();
                 res.status(400).json({ message: "Failed to fetch random character." });
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
 }); });
 app.get("/weapons", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var GenshinWeapons, GenshinWeaponData, randomIndex, randomWeapon, randomWeaponAPI, randomWeaponData, randomWeaponImage, error_2;
+    var GenshinWeapons, GenshinWeaponData, randomIndex, randomWeapon, randomWeaponAPI, randomWeaponData, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 6, , 7]);
+                _a.trys.push([0, 5, , 6]);
                 return [4 /*yield*/, fetch("https://genshin.jmp.blue/weapons/")];
             case 1:
                 GenshinWeapons = _a.sent();
@@ -98,19 +93,13 @@ app.get("/weapons", function (req, res) { return __awaiter(void 0, void 0, void 
                 return [4 /*yield*/, randomWeaponAPI.json()];
             case 4:
                 randomWeaponData = _a.sent();
-                return [4 /*yield*/, fetch("https://genshin.jmp.blue/weapons/".concat(randomWeapon, "/icon"))];
+                res.status(200).json({ weapon: randomWeaponData });
+                return [3 /*break*/, 6];
             case 5:
-                randomWeaponImage = _a.sent();
-                //use /weapons/name/icon to display the name
-                res
-                    .status(200)
-                    .json({ weapon: randomWeaponData, image: randomWeaponImage });
-                return [3 /*break*/, 7];
-            case 6:
                 error_2 = _a.sent();
                 res.status(400).json({ message: "Error fetching weapons." });
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
 }); });
