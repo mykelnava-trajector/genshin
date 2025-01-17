@@ -84,7 +84,7 @@ const Genshin = () => {
                 <img
                   src={
                     "vision" in standard
-                      ? `https://genshin.jmp.blue/characters/${standard.id}/card`
+                      ? `https://genshin.jmp.blue/characters/${standard.id}/portrait`
                       : `https://genshin.jmp.blue/weapons/${standard.id}/icon`
                   }
                   alt={standard.name}
