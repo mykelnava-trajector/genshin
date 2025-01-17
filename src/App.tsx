@@ -2,69 +2,93 @@ import { useState } from "react";
 import { Character, Weapon } from "./interface/GenshinInterface";
 
 const Genshin = () => {
-  const [character, setCharacter] = useState<Character | null>(null);
+  const [standard, setStandard] = useState<Character | Weapon | null>(null);
   const [weapon, setWeapon] = useState<Weapon | null>(null);
+  const [primogens, setPrimogens] = useState<number>(32000);
 
-  const fetchRandomCharacter = async () => {
+  const fetchRandomstandard = async () => {
+    if (primogens < 160) {
+      return primogens;
+    }
     try {
-      const response = await fetch("http://localhost:3000/character");
+      const response = await fetch("http://localhost:3000/standard");
       const data = await response.json();
-      setCharacter(data.character);
+      if (data.standard) {
+        setStandard(data.standard);
+      } else {
+        setStandard(data.weapon);
+      }
+
+      setPrimogens((prev) => prev - 160);
     } catch (error) {
-      console.error("Error fetching character:", error);
+      console.error("Error fetching standard:", error);
     }
   };
 
   const fetchRandomWeapon = async () => {
+    if (primogens < 160) {
+      return primogens;
+    }
     try {
       const response = await fetch("http://localhost:3000/weapons");
       const data = await response.json();
       setWeapon(data.weapon);
+      setPrimogens((prev) => prev - 160);
     } catch (error) {
       console.error("Error fetching weapon:", error);
     }
   };
 
   return (
-    <div className="bg-blue-950 min-h-screen flex flex-col items-center justify-center p-4">
-      <h1 className="text-white text-3xl font-bold mb-6">
+    <div className="bg-genimp min-h-screen flex flex-col items-center justify-center p-4">
+      <h1 className="font-custom text-dirty text-3xl font-bold mb-2">
         Genshin Impact Pull
       </h1>
+      <div className="text-lg font-bold mb-2">
+        <p className="font-custom text-dirty text-3xl">
+          Primogens: {primogens}
+        </p>
+      </div>
       <div className="flex space-x-4 mb-6">
         <button
-          onClick={fetchRandomCharacter}
-          className="bg-orange-600 text-white px-6 py-3 rounded-md hover:bg-orange-500"
+          onClick={fetchRandomstandard}
+          disabled={primogens < 160}
+          className="bg-orange-600 font-custom text-white px-6 py-3 rounded-md hover:bg-orange-500"
         >
-          Get Random Character
+          Standard Wish
         </button>
         <button
           onClick={fetchRandomWeapon}
-          className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-400"
+          disabled={primogens < 160}
+          className="bg-blue-500 font-custom text-white px-6 py-3 rounded-md hover:bg-blue-400"
         >
-          Get Random Weapon
+          Weapon Wish
         </button>
       </div>
 
       <div className="flex flex-row items-center space-x-8">
-        {character && (
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+        {standard && (
+          <div className="bg-orange-600 p-3 rounded-lg max-w-xs text-center mx-20">
             <img
-              src={`https://genshin.jmp.blue/characters/${character.id}/gacha-card`}
-              alt={character.name}
-              className="w-48 h-auto rounded-lg mb-4"
+              src={
+                "vision" in standard
+                  ? `https://genshin.jmp.blue/standards/${standard.id}/card`
+                  : `https://genshin.jmp.blue/weapons/${standard.id}/icon`
+              }
+              alt={standard.name}
+              className="w-[80%] h-auto rounded-lg mx-auto"
             />
-            <p className="text-lg font-semibold">{character.name}</p>
+            <p className="text-2xl font-semibold text-white">{standard.name}</p>
           </div>
         )}
-
         {weapon && (
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+          <div className="bg-blue-500 p-3 rounded-lg shadow-lg max-w-xs w-auto text-center items-center">
             <img
               src={`https://genshin.jmp.blue/weapons/${weapon.id}/icon`}
               alt={weapon.name}
-              className="w-48 h-auto rounded-lg mb-4"
+              className="w-25 h-25 rounded-lg"
             />
-            <p className="text-lg font-semibold">{weapon.name}</p>
+            <p className="text-2xl font-semibold text-white">{weapon.name}</p>
           </div>
         )}
       </div>

@@ -43,12 +43,14 @@ app.use(cors());
 app.listen(3000, function () {
     console.log("Listening to port 3000.");
 });
-app.get("/character", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var GenshinCharacters, GenshinCharData, randomIndex, randomCharacter, randomCharacterData, randomCharacterJSON, error_1;
+app.get("/standard", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var chance, GenshinCharacters, GenshinCharData, randomIndex, randomCharacter, randomCharacterData, randomCharacterJSON, GenshinWeapons, GenshinWeaponData, cumulativeProbabilities, stars, pull, star_1, i, weaponDetailsPromises, weaponDetails, filteredWeapons, randomIndex, randomWeapon, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 5, , 6]);
+                _a.trys.push([0, 10, , 11]);
+                chance = Math.random() * 70;
+                if (!(chance > 65)) return [3 /*break*/, 5];
                 return [4 /*yield*/, fetch("https://genshin.jmp.blue/characters")];
             case 1:
                 GenshinCharacters = _a.sent();
@@ -64,42 +66,98 @@ app.get("/character", function (req, res) { return __awaiter(void 0, void 0, voi
             case 4:
                 randomCharacterJSON = _a.sent();
                 res.status(200).json({ character: randomCharacterJSON });
-                return [3 /*break*/, 6];
-            case 5:
+                return [3 /*break*/, 9];
+            case 5: return [4 /*yield*/, fetch("https://genshin.jmp.blue/weapons/")];
+            case 6:
+                GenshinWeapons = _a.sent();
+                return [4 /*yield*/, GenshinWeapons.json()];
+            case 7:
+                GenshinWeaponData = _a.sent();
+                cumulativeProbabilities = [93.3, 99.3, 100];
+                stars = [3, 4, 5];
+                pull = Math.random() * 100;
+                star_1 = 3;
+                for (i = 0; i < cumulativeProbabilities.length; i++) {
+                    if (pull <= cumulativeProbabilities[i]) {
+                        star_1 = stars[i];
+                        break;
+                    }
+                }
+                weaponDetailsPromises = GenshinWeaponData.map(function (weaponID) {
+                    return fetch("https://genshin.jmp.blue/weapons/".concat(weaponID)).then(function (response) {
+                        return response.json();
+                    });
+                });
+                return [4 /*yield*/, Promise.all(weaponDetailsPromises)];
+            case 8:
+                weaponDetails = _a.sent();
+                filteredWeapons = weaponDetails.filter(function (weapon) { return weapon.rarity === star_1; });
+                if (filteredWeapons.length === 0) {
+                    res
+                        .status(404)
+                        .json({ message: "No weapons found for the selected rarity." });
+                    return [2 /*return*/];
+                }
+                randomIndex = Math.floor(Math.random() * filteredWeapons.length);
+                randomWeapon = filteredWeapons[randomIndex];
+                res.status(200).json({ weapon: randomWeapon });
+                _a.label = 9;
+            case 9: return [3 /*break*/, 11];
+            case 10:
                 error_1 = _a.sent();
                 res.status(400).json({ message: "Failed to fetch random character." });
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
+                return [3 /*break*/, 11];
+            case 11: return [2 /*return*/];
         }
     });
 }); });
 app.get("/weapons", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var GenshinWeapons, GenshinWeaponData, randomIndex, randomWeapon, randomWeaponAPI, randomWeaponData, error_2;
+    var GenshinWeapons, GenshinWeaponData, cumulativeProbabilities, stars, pull, star_2, i, weaponDetailsPromises, weaponDetails, filteredWeapons, randomIndex, randomWeapon, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 5, , 6]);
+                _a.trys.push([0, 4, , 5]);
                 return [4 /*yield*/, fetch("https://genshin.jmp.blue/weapons/")];
             case 1:
                 GenshinWeapons = _a.sent();
                 return [4 /*yield*/, GenshinWeapons.json()];
             case 2:
                 GenshinWeaponData = _a.sent();
-                randomIndex = Math.floor(Math.random() * GenshinWeaponData.length);
-                randomWeapon = GenshinWeaponData[randomIndex];
-                return [4 /*yield*/, fetch("https://genshin.jmp.blue/weapons/".concat(randomWeapon))];
+                cumulativeProbabilities = [93.3, 99.3, 100];
+                stars = [3, 4, 5];
+                pull = Math.random() * 100;
+                star_2 = 3;
+                for (i = 0; i < cumulativeProbabilities.length; i++) {
+                    if (pull <= cumulativeProbabilities[i]) {
+                        star_2 = stars[i];
+                        break;
+                    }
+                }
+                weaponDetailsPromises = GenshinWeaponData.map(function (weaponID) {
+                    return fetch("https://genshin.jmp.blue/weapons/".concat(weaponID)).then(function (response) {
+                        return response.json();
+                    });
+                });
+                return [4 /*yield*/, Promise.all(weaponDetailsPromises)];
             case 3:
-                randomWeaponAPI = _a.sent();
-                return [4 /*yield*/, randomWeaponAPI.json()];
+                weaponDetails = _a.sent();
+                filteredWeapons = weaponDetails.filter(function (weapon) { return weapon.rarity === star_2; });
+                if (filteredWeapons.length === 0) {
+                    res
+                        .status(404)
+                        .json({ message: "No weapons found for the selected rarity." });
+                    return [2 /*return*/];
+                }
+                randomIndex = Math.floor(Math.random() * filteredWeapons.length);
+                randomWeapon = filteredWeapons[randomIndex];
+                res.status(200).json({ weapon: randomWeapon });
+                return [3 /*break*/, 5];
             case 4:
-                randomWeaponData = _a.sent();
-                res.status(200).json({ weapon: randomWeaponData });
-                return [3 /*break*/, 6];
-            case 5:
                 error_2 = _a.sent();
+                console.error(error_2); // Log the error
                 res.status(400).json({ message: "Error fetching weapons." });
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); });
