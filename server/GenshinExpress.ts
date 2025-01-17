@@ -9,8 +9,8 @@ app.listen(3000, () => {
 
 app.get(`/standard`, async (req, res) => {
   try {
-    let chance = Math.random() * 70;
-    if (chance > 65) {
+    let chance = Math.random() * 80;
+    if (chance > 50) {
       const GenshinCharacters = await fetch(
         `https://genshin.jmp.blue/characters`
       );

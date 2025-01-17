@@ -49,8 +49,8 @@ app.get("/standard", function (req, res) { return __awaiter(void 0, void 0, void
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 10, , 11]);
-                chance = Math.random() * 70;
-                if (!(chance > 65)) return [3 /*break*/, 5];
+                chance = Math.random() * 80;
+                if (!(chance > 50)) return [3 /*break*/, 5];
                 return [4 /*yield*/, fetch("https://genshin.jmp.blue/characters")];
             case 1:
                 GenshinCharacters = _a.sent();

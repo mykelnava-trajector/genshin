@@ -3,13 +3,13 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        genimp: "url('/genshin.jpg')",
+        genimp: "url('/genshin2.jpg')",
       },
       fontFamily: {
         custom: ["GenshinImpactFont", "sans-serif"],
       },
       colors: {
-        dirty: "#fefae0",
+        dirty: "#E63946",
       },
     },
   },
